@@ -20,11 +20,12 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements IMainCallback {
 
-    private static final int KEY_BUS_NBR_FRAGMENT = 0;
-    private static final int KEY_SERVICE_NBR_FRAGMENT = 1;
-
     @BindView(R.id.fab)
     protected FloatingActionButton nextButton;
+
+    INextButton nextButtonCallback;
+    ViewPager viewPager;
+    SectionsPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +37,26 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        SectionsPagerAdapter mSectionsPagerAdapter =
+        adapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager = (ViewPager) findViewById(R.id.container);
+        viewPager.setAdapter(adapter);
 
         // Initially the next button is greyed out and disabled
         // Fragment notifies when 4 characters are inputted in edit text
         changeNextButtonStatus(false);
 
         RxView.clicks(nextButton)
-                .subscribe(aVoid -> viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true));
+                .subscribe(aVoid -> onNextButtonClicked());
+    }
+
+    private void onNextButtonClicked() {
+        nextButtonCallback = (INextButton) adapter.getItem(viewPager.getCurrentItem());
+        nextButtonCallback.nextButtonClicked();
+
+        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
     }
 
     private void modifyNextButton(Boolean isEnabled) {
@@ -108,10 +116,10 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
             switch(position) {
                 case 0:
-                    fragment = NumPadInputFragment.newInstance(R.string.write_bus_number_hint_text, KEY_BUS_NBR_FRAGMENT);
+                    fragment = NumPadInputFragment.newInstance(R.string.write_bus_number_hint_text);
                     break;
                 case 1:
-                    fragment = NumPadInputFragment.newInstance(R.string.write_service_number_hint_text, KEY_SERVICE_NBR_FRAGMENT);
+                    fragment = NumPadInputFragment.newInstance(R.string.write_service_number_hint_text);
                     break;
                 case 2:
                     fragment = SelectProblemAreaFragment.newInstance();

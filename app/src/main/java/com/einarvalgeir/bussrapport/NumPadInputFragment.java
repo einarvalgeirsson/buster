@@ -2,6 +2,7 @@ package com.einarvalgeir.bussrapport;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,12 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NumPadInputFragment extends BaseFragment {
+public class NumPadInputFragment extends BaseFragment implements INextButton {
 
     private static final String KEY_TEXT_RES_ID = "textResId";
     private static final String KEY_FRAGMENT_ID = "fragId";
 
     private int textResId;
-    private int fragId;
 
     @BindView(R.id.written_bus_number)
     TextView numpadResult;
@@ -33,12 +33,11 @@ public class NumPadInputFragment extends BaseFragment {
     @BindView(R.id.bus_number_desc_text)
     TextView descriptionText;
 
-    public static NumPadInputFragment newInstance(int textResId, int id) {
+    public static NumPadInputFragment newInstance(int textResId) {
         NumPadInputFragment fragment = new NumPadInputFragment();
 
         Bundle args = new Bundle();
         args.putInt(KEY_TEXT_RES_ID, textResId);
-        args.putInt(KEY_FRAGMENT_ID, id);
 
         fragment.setArguments(args);
         return fragment;
@@ -51,7 +50,6 @@ public class NumPadInputFragment extends BaseFragment {
 
         if (args != null) {
             textResId = args.getInt(KEY_TEXT_RES_ID, 0);
-            fragId = args.getInt(KEY_FRAGMENT_ID, 0);
         }
     }
 
@@ -103,5 +101,10 @@ public class NumPadInputFragment extends BaseFragment {
     private void bindNumberButton(View v, int id) {
         Button button = (Button) v.findViewById(id);
         RxView.clicks(button).subscribe(aVoid -> numpadResult.append(button.getText()));
+    }
+
+    @Override
+    public void nextButtonClicked() {
+        Log.d("XXXXXX", "FOGOGOGOGOGGO");
     }
 }
