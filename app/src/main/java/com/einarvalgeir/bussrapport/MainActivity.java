@@ -20,6 +20,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements IMainCallback {
 
+    private static final int KEY_BUS_NBR_FRAGMENT = 0;
+    private static final int KEY_SERVICE_NBR_FRAGMENT = 1;
+
     @BindView(R.id.fab)
     protected FloatingActionButton nextButton;
 
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+
         private final String TAG = SectionsPagerAdapter.class.getSimpleName();
 
         SectionsPagerAdapter(FragmentManager fm) {
@@ -105,10 +108,10 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
             switch(position) {
                 case 0:
-                    fragment = SelectBusNumberFragment.newInstance();
+                    fragment = SelectBusNumberFragment.newInstance(R.string.write_bus_number_hint_text, KEY_BUS_NBR_FRAGMENT);
                     break;
                 case 1:
-                    fragment = SelectServiceNumberFragment.newInstance();
+                    fragment = SelectBusNumberFragment.newInstance(R.string.write_service_number_hint_text, KEY_SERVICE_NBR_FRAGMENT);
                     break;
                 case 2:
                     fragment = SelectProblemAreaFragment.newInstance();
