@@ -16,7 +16,7 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SelectBusNumberFragment extends BaseFragment {
+public class NumPadInputFragment extends BaseFragment {
 
     private static final String KEY_TEXT_RES_ID = "textResId";
     private static final String KEY_FRAGMENT_ID = "fragId";
@@ -33,8 +33,8 @@ public class SelectBusNumberFragment extends BaseFragment {
     @BindView(R.id.bus_number_desc_text)
     TextView descriptionText;
 
-    public static SelectBusNumberFragment newInstance(int textResId, int id) {
-        SelectBusNumberFragment fragment = new SelectBusNumberFragment();
+    public static NumPadInputFragment newInstance(int textResId, int id) {
+        NumPadInputFragment fragment = new NumPadInputFragment();
 
         Bundle args = new Bundle();
         args.putInt(KEY_TEXT_RES_ID, textResId);

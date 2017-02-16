@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
             switch(position) {
                 case 0:
-                    fragment = SelectBusNumberFragment.newInstance(R.string.write_bus_number_hint_text, KEY_BUS_NBR_FRAGMENT);
+                    fragment = NumPadInputFragment.newInstance(R.string.write_bus_number_hint_text, KEY_BUS_NBR_FRAGMENT);
                     break;
                 case 1:
-                    fragment = SelectBusNumberFragment.newInstance(R.string.write_service_number_hint_text, KEY_SERVICE_NBR_FRAGMENT);
+                    fragment = NumPadInputFragment.newInstance(R.string.write_service_number_hint_text, KEY_SERVICE_NBR_FRAGMENT);
                     break;
                 case 2:
                     fragment = SelectProblemAreaFragment.newInstance();
