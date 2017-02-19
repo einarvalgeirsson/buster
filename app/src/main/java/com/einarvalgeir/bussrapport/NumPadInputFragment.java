@@ -2,7 +2,6 @@ package com.einarvalgeir.bussrapport;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,9 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NumPadInputFragment extends BaseFragment implements INextButton {
+public class NumPadInputFragment extends BaseFragment {
 
     private static final String KEY_TEXT_RES_ID = "textResId";
-    private static final String KEY_FRAGMENT_ID = "fragId";
 
     private int textResId;
 
@@ -105,6 +103,15 @@ public class NumPadInputFragment extends BaseFragment implements INextButton {
 
     @Override
     public void nextButtonClicked() {
-        Log.d("XXXXXX", "FOGOGOGOGOGGO");
+        // Store bus number in model via presenter
+        if (textResId == R.string.write_bus_number_hint_text) {
+            getMainActivity()
+                    .getPresenter()
+                    .addBusNumber(Integer.valueOf(numpadResult.getText().toString()));
+        } else if (textResId == R.string.write_service_number_hint_text) {
+            getMainActivity()
+                    .getPresenter()
+                    .addServiceNumber(Integer.valueOf(numpadResult.getText().toString()));
+        }
     }
 }

@@ -6,4 +6,5 @@
     <string name="write_bus_number_hint_text">Skriv in bussnummer</string>
     <string name="write_service_number_hint_text">Skriv in tjänstnummer</string>
     <string name="select_problem_area_text">Välj den del av bussen problemet uppstått</string>
+    <string name="problem_area_desc_hint">Ge en beskrivning av problemet</string>
 </resources>

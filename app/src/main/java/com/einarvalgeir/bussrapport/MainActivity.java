@@ -1,19 +1,39 @@
 package com.einarvalgeir.bussrapport;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.einarvalgeir.bussrapport.events.ViewPdfEvent;
+import com.einarvalgeir.bussrapport.model.Report;
+import com.einarvalgeir.bussrapport.presenter.MainPresenter;
 import com.jakewharton.rxbinding.view.RxView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
     INextButton nextButtonCallback;
     ViewPager viewPager;
     SectionsPagerAdapter adapter;
+    Toolbar toolbar;
+    MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +55,15 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        turnOffToolbarScrolling();
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         adapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
+
+        presenter = new MainPresenter(new Report());
 
         // Set up the ViewPager with the sections adapter.
         viewPager = (ViewPager) findViewById(R.id.container);
@@ -52,8 +77,8 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                 .subscribe(aVoid -> onNextButtonClicked());
     }
 
-    private void onNextButtonClicked() {
-        nextButtonCallback = (INextButton) adapter.getItem(viewPager.getCurrentItem());
+    public void onNextButtonClicked() {
+        nextButtonCallback = (BaseFragment) adapter.instantiateItem(viewPager, viewPager.getCurrentItem());
         nextButtonCallback.nextButtonClicked();
 
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
@@ -90,14 +115,26 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void turnOffToolbarScrolling() {
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+
+        //turn off scrolling
+        AppBarLayout.LayoutParams toolbarLayoutParams = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        toolbarLayoutParams.setScrollFlags(0);
+        toolbar.setLayoutParams(toolbarLayoutParams);
+
+        CoordinatorLayout.LayoutParams appBarLayoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        appBarLayoutParams.setBehavior(null);
+        appBarLayout.setLayoutParams(appBarLayoutParams);
     }
 
     @Override
     public void changeNextButtonStatus(boolean isEnabled) {
         modifyNextButton(isEnabled);
+    }
+
+    public MainPresenter getPresenter() {
+        return presenter;
     }
 
 
@@ -124,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                 case 2:
                     fragment = SelectProblemAreaFragment.newInstance();
                     break;
+                case 3:
+                    fragment = SaveReportFragment.newInstance();
+                    break;
                 default:
                     Log.e(TAG, "Non-supported Fragment at position: " + position);
             }
@@ -132,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -144,6 +184,47 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                     return "SECTION 2";
             }
             return null;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ViewPdfEvent e) {
+        viewPdf(e.getFile(), e.getDirectory());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void viewPdf(String file, String directory) {
+
+        File pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
+        Uri path = FileProvider.getUriForFile(getApplicationContext(), "com.einarvalgeir.bussrapport.provider" ,pdfFile);
+
+        // Setting the intent for pdf reader
+        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+        pdfIntent.setDataAndType(path, "application/pdf");
+        pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        List<ResolveInfo> resInfoList = getApplicationContext().getPackageManager().queryIntentActivities(pdfIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            getApplicationContext().grantUriPermission(packageName, path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+
+        try {
+            startActivity(pdfIntent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(MainActivity.this, "Can't read pdf file", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-public class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements INextButton {
 
     protected IMainCallback callback;
 
@@ -23,4 +23,12 @@ public class BaseFragment extends Fragment {
         }
     }
 
+    protected MainActivity getMainActivity() {
+        return (MainActivity) getActivity();
+    }
+
+    @Override
+    public void nextButtonClicked() {
+
+    }
 }

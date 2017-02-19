@@ -1,0 +1,23 @@
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    card_view:cardBackgroundColor="@color/colorPrimaryLight"
+    android:layout_alignParentTop="true"
+    android:paddingTop="24dp"
+    >
+
+<TextView
+    android:id="@+id/problem_area_name"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textSize="24dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="6dp"
+    android:textColor="@android:color/white"
+    android:textAlignment="center"
+    />
+</android.support.v7.widget.CardView>
