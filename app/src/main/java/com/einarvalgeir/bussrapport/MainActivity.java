@@ -162,6 +162,9 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                     fragment = SelectProblemAreaFragment.newInstance();
                     break;
                 case 3:
+                    fragment = SetDateFragment.newInstance();
+                    break;
+                case 4:
                     fragment = SaveReportFragment.newInstance();
                     break;
                 default:
@@ -172,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
 
         @Override

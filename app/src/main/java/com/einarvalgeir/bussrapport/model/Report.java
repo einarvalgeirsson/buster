@@ -1,13 +1,14 @@
 package com.einarvalgeir.bussrapport.model;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class Report {
     private int busNumber;
     private int serviceNumber;
     private String reporterName;
     private Problem problem;
-    private Date timeOfReporting;
+
+    private DateTime date;
 
     public void setBusNumber(int busNumber) {
         this.busNumber = busNumber;
@@ -19,6 +20,10 @@ public class Report {
 
     public void setReporterName(String reporterName) {
         this.reporterName = reporterName;
+    }
+
+    public void setTimeOfReporting(DateTime date) {
+        this.date = date;
     }
 
     public void setProblem(Problem problem) {
@@ -42,6 +47,6 @@ public class Report {
     }
 
     public String getTimeOfReporting() {
-        return new Date().toString();
+        return date.getYear() + "-" + date.getMonthOfYear() + "-" + date.getDayOfMonth();
     }
 }
