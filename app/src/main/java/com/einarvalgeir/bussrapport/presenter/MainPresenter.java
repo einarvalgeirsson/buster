@@ -3,6 +3,7 @@ package com.einarvalgeir.bussrapport.presenter;
 import com.einarvalgeir.bussrapport.model.Problem;
 import com.einarvalgeir.bussrapport.model.Report;
 import com.einarvalgeir.bussrapport.pdf.PdfCreator;
+import com.einarvalgeir.bussrapport.util.SharedPrefsUtil;
 
 import org.joda.time.DateTime;
 
@@ -10,8 +11,10 @@ public class MainPresenter {
 
     private Report report;
 
-    public MainPresenter(Report report) {
+    public MainPresenter(Report report, SharedPrefsUtil prefsUtil) {
         this.report = report;
+        this.report.setReporterName(prefsUtil.getReporterName());
+        this.report.setAssigneeEmail(prefsUtil.getAssigneeEmail());
     }
 
     public void addBusNumber(int busNumber) {

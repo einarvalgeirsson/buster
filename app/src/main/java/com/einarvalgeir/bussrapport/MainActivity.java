@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.einarvalgeir.bussrapport.events.ViewPdfEvent;
 import com.einarvalgeir.bussrapport.model.Report;
 import com.einarvalgeir.bussrapport.presenter.MainPresenter;
+import com.einarvalgeir.bussrapport.util.SharedPrefsUtil;
 import com.jakewharton.rxbinding.view.RxView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
     SectionsPagerAdapter adapter;
     Toolbar toolbar;
     MainPresenter presenter;
+    SharedPrefsUtil prefsUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +60,13 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         turnOffToolbarScrolling();
         setSupportActionBar(toolbar);
+        prefsUtil = new SharedPrefsUtil(getApplicationContext());
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         adapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
 
-        presenter = new MainPresenter(new Report());
+        presenter = new MainPresenter(new Report(), prefsUtil);
 
         // Set up the ViewPager with the sections adapter.
         viewPager = (ViewPager) findViewById(R.id.container);
@@ -75,6 +78,20 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
         RxView.clicks(nextButton)
                 .subscribe(aVoid -> onNextButtonClicked());
+
+        if (!reporterNameIsSet() || !assigneeEmailIsSet()) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    private boolean assigneeEmailIsSet() {
+        return !prefsUtil.getAssigneeEmail().isEmpty();
+    }
+
+    private boolean reporterNameIsSet() {
+        return !prefsUtil.getReporterName().isEmpty();
     }
 
     public void onNextButtonClicked() {

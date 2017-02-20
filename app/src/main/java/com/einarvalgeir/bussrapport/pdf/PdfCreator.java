@@ -10,6 +10,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +24,7 @@ public class PdfCreator {
     private static final String FILE_NAME = "bus_report.pdf";
 
     private static Font headerFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD);
-    private static Font subHeaderFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD);
+    private static Font subHeaderFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
     private static Font smallBold = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
     private static Font smallNormal = new Font(Font.FontFamily.HELVETICA, 14, Font.NORMAL);
 
@@ -81,6 +82,8 @@ public class PdfCreator {
         addEmptyLine(preface, 1);
         // Lets write a big header
         preface.add(new Paragraph("Felrapport", headerFont));
+        preface.add(new DottedLineSeparator());
+        addEmptyLine(preface, 1);
 
         preface.add(new Paragraph("Buss: " + report.getBusNumber(), subHeaderFont));
 

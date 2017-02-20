@@ -7,9 +7,23 @@
                 android:orientation="vertical"
     android:tag="problem_area_fragment">
 
+    <TextView
+        android:id="@+id/problem_area_instruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:layout_alignParentTop="true"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:textSize="16dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:text="@string/select_problem_area_text_instruction"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
+        android:layout_below="@id/problem_area_instruction"
         android:layout_height="240dp"
         android:background="@color/colorPrimary"
         android:scrollbars="vertical"/>
@@ -35,6 +49,8 @@
         android:layout_alignParentBottom="true"
         android:textAlignment="viewStart"
         android:gravity="start"
+        android:hint="@string/problem_area_desc_hint"
+        android:textColorHint="@color/hintTextGrey"
         android:layout_below="@id/selected_problem_area"
         android:background="@color/colorPrimary"
         android:padding="8dp"
