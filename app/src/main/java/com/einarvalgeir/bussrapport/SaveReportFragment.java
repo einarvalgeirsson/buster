@@ -27,11 +27,7 @@ public class SaveReportFragment extends BaseFragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_save_report, container, false);
         ButterKnife.bind(this, rootView);
 
-
         RxView.clicks(saveButton).subscribe(aVoid -> getMainActivity().getPresenter().generatePdf());
-
-
-
 
         return rootView;
     }
