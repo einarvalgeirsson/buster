@@ -47,6 +47,9 @@ public class Report {
     }
 
     public String getTimeOfReporting() {
-        return date.getYear() + "-" + date.getMonthOfYear() + "-" + date.getDayOfMonth();
+        int year = date.getYear();
+        int month = date.getMonthOfYear() + 1;
+        int day = date.getDayOfMonth();
+        return year + "-" + (month < 10 ? "0"+month : month) + "-" + (day < 10 ? "0"+day : day);
     }
 }

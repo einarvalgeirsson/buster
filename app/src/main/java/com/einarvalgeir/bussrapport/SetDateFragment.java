@@ -8,13 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 
+import org.joda.time.DateTime;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SetDateFragment extends BaseFragment implements INextButton {
 
     @BindView(R.id.calendarView)
-    CalendarView cal;
+    CalendarView calendarView;
+
+    DateTime date;
 
     public static SetDateFragment newInstance() {
         return new SetDateFragment();
@@ -26,13 +30,14 @@ public class SetDateFragment extends BaseFragment implements INextButton {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_set_date, container, false);
         ButterKnife.bind(this, rootView);
 
-        cal.setMaxDate(System.currentTimeMillis());
+        calendarView.setMaxDate(System.currentTimeMillis());
+        calendarView.setOnDateChangeListener((calendarView1, i, i1, i2) -> date = new DateTime(i, i1, i2, 0 ,0));
 
         return rootView;
     }
 
     @Override
     public void nextButtonClicked() {
-        getMainActivity().getPresenter().setDate(cal.getDate());
+        getMainActivity().getPresenter().setDate(date);
     }
 }

@@ -6,13 +6,9 @@ import com.einarvalgeir.bussrapport.pdf.PdfCreator;
 
 import org.joda.time.DateTime;
 
-import java.util.Date;
-
 public class MainPresenter {
 
     private Report report;
-
-
 
     public MainPresenter(Report report) {
         this.report = report;
@@ -34,8 +30,7 @@ public class MainPresenter {
         new PdfCreator(report).createPdf();
     }
 
-    public void setDate(long date) {
-
-        report.setTimeOfReporting(new DateTime(date));
+    public void setDate(DateTime date) {
+        report.setTimeOfReporting(date);
     }
 }
