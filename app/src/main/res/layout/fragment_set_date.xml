@@ -6,21 +6,23 @@
         android:id="@+id/set_date_instruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
         android:layout_alignParentTop="true"
-        android:paddingTop="4dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="sans-serif-thin"
         android:paddingBottom="4dp"
-        android:textSize="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/set_date_instruction_text"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:text="@string/set_date_instruction_text"/>
+        android:textSize="24dp"/>
 
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_below="@id/set_date_instruction"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:paddingTop="24dp"
         android:layout_centerInParent="true"
-        android:layout_weight="1"/>
+        />
 </RelativeLayout>
