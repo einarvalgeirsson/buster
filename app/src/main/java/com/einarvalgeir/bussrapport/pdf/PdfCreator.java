@@ -2,12 +2,14 @@ package com.einarvalgeir.bussrapport.pdf;
 
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.einarvalgeir.bussrapport.events.ViewPdfEvent;
 import com.einarvalgeir.bussrapport.model.Report;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.DottedLineSeparator;
@@ -17,11 +19,13 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class PdfCreator {
 
     private static final String DIRECTORY = "external_files";
     private static final String FILE_NAME = "bus_report.pdf";
+    private static final String TAG = PdfCreator.class.getSimpleName();
 
     private static Font headerFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD);
     private static Font subHeaderFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
@@ -92,11 +96,21 @@ public class PdfCreator {
         preface.add(new Paragraph("Rapport skapad av: " + report.getReporterName(), smallBold));
         preface.add(new Paragraph("Tjänst: " + report.getServiceNumber(), smallBold));
         preface.add(new Paragraph("Datum: " + report.getTimeOfReporting(), smallBold));
+
+        if (report.getImage() != null) {
+            try {
+                Image img = Image.getInstance(report.getImage());
+                img.scaleToFit(300f, 300f);
+                addEmptyLine(preface, 3);
+                preface.add(img);
+                addEmptyLine(preface, 1);
+            } catch (IOException e) {
+                Log.e(TAG, "Could not add image to pdf: " + e.getMessage());
+            }
+        }
         preface.add(new Paragraph(
                 "Felområde: " + report.getProblem().getName(),
                 smallBold));
-
-        addEmptyLine(preface, 1);
 
         preface.add(new Paragraph(
                 report.getProblem().getDescription(),

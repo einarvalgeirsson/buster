@@ -36,4 +36,8 @@ public class MainPresenter {
     public void setDate(DateTime date) {
         report.setTimeOfReporting(date);
     }
+
+    public void setImage(String path) {
+        report.setImage(path);
+    }
 }

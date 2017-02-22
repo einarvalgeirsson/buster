@@ -12,4 +12,5 @@
     <string name="settings_save_button_text">Spara</string>
     <string name="select_problem_area_text_instruction">Välj problemområde</string>
     <string name="set_date_instruction_text">Välj datum då problemet påträffades</string>
+    <string name="select_image_button_text">Välj en bild</string>
 </resources>

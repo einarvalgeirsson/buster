@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-public class BaseFragment extends Fragment implements INextButton {
+public class BaseFragment extends Fragment implements INextButton, IImageCallback {
 
     protected IMainCallback callback;
 
@@ -28,7 +28,8 @@ public class BaseFragment extends Fragment implements INextButton {
     }
 
     @Override
-    public void nextButtonClicked() {
+    public void nextButtonClicked() {}
 
-    }
+    @Override
+    public void setImage(String path) {}
 }

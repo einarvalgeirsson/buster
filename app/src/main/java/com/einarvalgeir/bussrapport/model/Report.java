@@ -14,6 +14,8 @@ public class Report {
     private Problem problem;
     private String assigneeEmail;
 
+    private String image;
+
     private DateTime date;
 
     public void setBusNumber(int busNumber) {
@@ -50,7 +52,7 @@ public class Report {
 
     public String getTimeOfReporting() {
         int year = date.getYear();
-        int month = date.getMonthOfYear() + 1;
+        int month = date.getMonthOfYear();
         int day = date.getDayOfMonth();
         return year + "-" + (month < 10 ? "0"+month : month) + "-" + (day < 10 ? "0"+day : day);
     }
@@ -65,5 +67,13 @@ public class Report {
 
     public void setAssigneeEmail(String assigneeEmail) {
         this.assigneeEmail = assigneeEmail;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

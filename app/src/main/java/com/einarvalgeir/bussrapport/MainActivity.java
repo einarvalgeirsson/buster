@@ -1,13 +1,16 @@
 package com.einarvalgeir.bussrapport;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -41,10 +44,14 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements IMainCallback {
 
+    private static final int PICK_IMAGE = 0;
+
+
     @BindView(R.id.fab)
     protected FloatingActionButton nextButton;
 
     INextButton nextButtonCallback;
+    IImageCallback imageCallback;
     ViewPager viewPager;
     SectionsPagerAdapter adapter;
     Toolbar toolbar;
@@ -86,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
     }
 
+
+
     private boolean assigneeEmailIsSet() {
         return !prefsUtil.getAssigneeEmail().isEmpty();
     }
@@ -99,6 +108,17 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         nextButtonCallback.nextButtonClicked();
 
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        int currentItem = viewPager.getCurrentItem();
+
+        if (currentItem > 0) {
+            viewPager.setCurrentItem(currentItem -1);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void modifyNextButton(Boolean isEnabled) {
@@ -126,7 +146,8 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -152,6 +173,39 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
     public MainPresenter getPresenter() {
         return presenter;
+    }
+
+    public void openImagePicker() {
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            String s = getRealPathFromURI(selectedImageUri);
+            imageCallback = (BaseFragment) adapter.instantiateItem(viewPager, viewPager.getCurrentItem());
+            imageCallback.setImage(s);
+        }
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        @SuppressWarnings("deprecation")
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
 
@@ -182,6 +236,9 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                     fragment = SetDateFragment.newInstance();
                     break;
                 case 4:
+                    fragment = SelectImageFragment.newInstance();
+                    break;
+                case 5:
                     fragment = SaveReportFragment.newInstance();
                     break;
                 default:
@@ -192,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
         @Override
         public int getCount() {
-            return 5;
+            return 6;
         }
 
         @Override
