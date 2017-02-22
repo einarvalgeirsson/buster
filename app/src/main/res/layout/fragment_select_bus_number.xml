@@ -32,8 +32,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:textAlignment="center"
+                android:fontFamily="sans-serif-light"
                 android:textColor="@android:color/white"
                 android:textSize="28sp"
+                android:paddingTop="16dp"
                 />
 
             <TextView
@@ -47,6 +49,7 @@
                 android:maxLines="1"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
+                android:fontFamily="sans-serif"
                 android:textColorHint="@android:color/white"
                 android:textSize="36sp"
                 />
