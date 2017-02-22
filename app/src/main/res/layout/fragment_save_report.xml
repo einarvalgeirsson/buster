@@ -2,7 +2,67 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimaryLight">
+                android:background="@color/colorPrimaryVeryLight">
+
+    <TextView
+        android:id="@+id/summary_bus_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20dp"
+        android:paddingTop="16dp"
+        android:paddingLeft="8dp"/>
+
+    <TextView
+        android:id="@+id/summary_service_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/summary_bus_number"
+        android:layout_alignParentStart="true"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20dp"
+        android:paddingTop="4dp"
+        android:paddingLeft="8dp"/>
+
+    <TextView
+        android:id="@+id/summary_problem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/summary_service_number"
+        android:layout_alignParentStart="true"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20dp"
+        android:paddingTop="4dp"
+        android:paddingLeft="8dp"/>
+
+    <TextView
+        android:id="@+id/summary_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/summary_problem"
+        android:layout_alignParentStart="true"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20dp"
+        android:paddingTop="4dp"
+        android:paddingLeft="8dp"/>
+
+    <TextView
+        android:id="@+id/summary_reporter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/summary_date"
+        android:layout_alignParentStart="true"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20dp"
+        android:paddingTop="4dp"
+        android:paddingLeft="8dp"/>
 
     <Button
         android:id="@+id/save_report_button"
@@ -14,5 +74,6 @@
         android:textColor="@android:color/white">
 
     </Button>
+
 
 </RelativeLayout>

@@ -40,4 +40,8 @@ public class MainPresenter {
     public void setImage(String path) {
         report.setImage(path);
     }
+
+    public Report getReport() {
+        return report;
+    }
 }
