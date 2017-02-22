@@ -31,7 +31,11 @@ public class SetDateFragment extends BaseFragment implements INextButton {
         ButterKnife.bind(this, rootView);
 
         calendarView.setMaxDate(System.currentTimeMillis());
-        calendarView.setOnDateChangeListener((calendarView1, i, i1, i2) -> date = new DateTime(i, i1, i2, 0 ,0));
+        date = new DateTime(calendarView.getDate());
+        calendarView.setOnDateChangeListener((calendarView1, i, i1, i2) -> {
+            date = new DateTime(i, i1+1, i2, 0 ,0);
+            callback.changeNextButtonStatus(true);
+        });
 
         return rootView;
     }
