@@ -6,6 +6,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorHintText">#c5cae8</color>
-    <color name="disabledNextButtonGrey">#bfbfbf</color>
+    <color name="disabledButtonGrey">#bfbfbf</color>
     <color name="hintTextGrey">#616161</color>
 </resources>

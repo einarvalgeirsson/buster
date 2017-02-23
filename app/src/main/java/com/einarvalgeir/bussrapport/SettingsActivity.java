@@ -10,9 +10,13 @@ import android.widget.EditText;
 import com.einarvalgeir.bussrapport.model.Report;
 import com.einarvalgeir.bussrapport.util.SharedPrefsUtil;
 import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Func2;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -28,11 +32,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     SharedPrefsUtil prefsUtil;
 
+    Subscription buttonClickSub;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity_layout);
         ButterKnife.bind(this);
+
 
         prefsUtil = new SharedPrefsUtil(getApplicationContext());
 
@@ -40,9 +47,31 @@ public class SettingsActivity extends AppCompatActivity {
         assigneeEmail.setText(prefsUtil.getAssigneeEmail());
 
         RxView.clicks(saveButton)
-                .map(e -> isUserNameValid() && isEmailValid())
                 .subscribe(aVoid -> storeSettings());
+
+        rx.Observable<Boolean> reporterTextObservable =
+                RxTextView.textChangeEvents(reporterName)
+                .map(aVoid -> isUserNameValid());
+
+        rx.Observable<Boolean> emailTextObservable =
+                RxTextView.textChangeEvents(assigneeEmail)
+                        .map(aVoid -> isEmailValid());
+
+        Observable.combineLatest(reporterTextObservable, emailTextObservable, new Func2<Boolean, Boolean, Boolean>() {
+            @Override
+            public Boolean call(Boolean reporterNameIsValid, Boolean emailIsValid) {
+                return reporterNameIsValid && emailIsValid;
+            }
+        }).subscribe(enableSaveButton -> setSaveButtonState(enableSaveButton));
     }
+
+    private void setSaveButtonState(boolean isEnabled) {
+        int backgroundColor = isEnabled ? getResources().getColor(R.color.colorPrimary) :
+                getResources().getColor(R.color.disabledButtonGrey);
+        saveButton.setBackgroundColor(backgroundColor);
+        saveButton.setEnabled(isEnabled);
+    }
+
 
     private boolean isUserNameValid() {
         String s = reporterName.getText().toString();
@@ -53,7 +82,6 @@ public class SettingsActivity extends AppCompatActivity {
         String s = assigneeEmail.getText().toString();
         return (!s.isEmpty() && s.contains("@"));
     }
-
 
     private void storeSettings() {
         prefsUtil

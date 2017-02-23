@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         nextButton.setBackgroundTintList(
                 ColorStateList.valueOf(
                         getResources().getColor(
-                                isEnabled ? R.color.colorAccent : R.color.disabledNextButtonGrey)));
+                                isEnabled ? R.color.colorAccent : R.color.disabledButtonGrey)));
     }
 
 
