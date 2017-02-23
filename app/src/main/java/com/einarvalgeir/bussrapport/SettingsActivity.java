@@ -36,6 +36,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         prefsUtil = new SharedPrefsUtil(getApplicationContext());
 
+        reporterName.setText(prefsUtil.getReporterName());
+        assigneeEmail.setText(prefsUtil.getAssigneeEmail());
+
         RxView.clicks(saveButton)
                 .map(e -> isUserNameValid() && isEmailValid())
                 .subscribe(aVoid -> storeSettings());
@@ -50,8 +53,6 @@ public class SettingsActivity extends AppCompatActivity {
         String s = assigneeEmail.getText().toString();
         return (!s.isEmpty() && s.contains("@"));
     }
-
-
 
 
     private void storeSettings() {
