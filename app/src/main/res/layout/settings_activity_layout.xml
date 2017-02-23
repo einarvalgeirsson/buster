@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/name_desc_text"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp"
+        android:paddingRight="8dp"
         android:ems="10"
         android:inputType="textPersonName"/>
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/email_desc_text"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp"
+        android:paddingRight="8dp"
         android:ems="10"
         android:inputType="textEmailAddress"/>
 
