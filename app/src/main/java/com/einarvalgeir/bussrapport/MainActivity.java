@@ -1,5 +1,6 @@
 package com.einarvalgeir.bussrapport;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -14,9 +15,11 @@ import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +48,9 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements IMainCallback {
 
     private static final int PICK_IMAGE = 0;
+
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1;
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
 
 
     @BindView(R.id.fab)
@@ -91,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
             startActivity(intent);
         }
 
+        if (!isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+        }
     }
 
 
@@ -198,6 +207,8 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         }
     }
 
+
+
     public String getRealPathFromURI(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };
         @SuppressWarnings("deprecation")
@@ -304,4 +315,42 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
             Toast.makeText(MainActivity.this, "Can't read pdf file", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    public boolean isPermissionGranted(String permission) {
+        int isGranted = ContextCompat.checkSelfPermission(this, permission);
+
+        return isGranted == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public void requestPermission(String permission, int requestCode) {
+        ActivityCompat.requestPermissions(this,
+                new String[]{permission},
+                requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openImagePicker();
+                }
+                return;
+            }
+
+            case MY_PERMISSIONS_REQUEST_WRITE_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    return;
+                } else {
+                    finish();
+                }
+            }
+        }
+    }
+
 }
