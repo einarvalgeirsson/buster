@@ -6,4 +6,5 @@ package com.einarvalgeir.bussrapport;
 
 public interface INextButton {
     void nextButtonClicked();
+    void setNextButtonVisible(int visibility);
 }

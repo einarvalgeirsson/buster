@@ -52,8 +52,7 @@ public class SaveReportFragment extends BaseFragment {
         summaryDate.setText("Datum: " + currentReport.getTimeOfReporting());
         summaryReporter.setText("Rapporterat av: " + currentReport.getReporterName());
 
-
-
+//        setNextButtonVisible(View.GONE);
 
         RxView.clicks(saveButton).subscribe(aVoid -> getMainActivity().getPresenter().generatePdf());
 

@@ -31,5 +31,10 @@ public class BaseFragment extends Fragment implements INextButton, IImageCallbac
     public void nextButtonClicked() {}
 
     @Override
+    public void setNextButtonVisible(int visibility) {
+//        getMainActivity().setNextButtonVisible(visibility);
+    }
+
+    @Override
     public void setImage(String path) {}
 }
