@@ -9,7 +9,7 @@ android {
     buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.einarvalgeir.bussrapport"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -57,6 +57,8 @@ dependencies {
     compile 'com.itextpdf:itextg:5.5.10'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
+
+
 
 
 
