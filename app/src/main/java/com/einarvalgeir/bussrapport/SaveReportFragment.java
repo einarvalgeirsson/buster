@@ -17,7 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.einarvalgeir.bussrapport.events.ViewPdfEvent;
+import com.einarvalgeir.bussrapport.model.Email;
 import com.einarvalgeir.bussrapport.model.Report;
+import com.einarvalgeir.bussrapport.pdf.PdfCreator;
 import com.einarvalgeir.bussrapport.util.SharedPrefsUtil;
 import com.jakewharton.rxbinding.view.RxView;
 
@@ -82,7 +84,10 @@ public class SaveReportFragment extends BaseFragment {
 
 //        setNextButtonVisible(View.GONE);
 
-        RxView.clicks(sendButton).subscribe(aVoid -> sendEmail());
+        RxView.clicks(sendButton).subscribe(aVoid -> {
+            Email email = getMainActivity().getPresenter().getEmail();
+            sendEmail(email);
+        });
 
         RxView.clicks(saveButton).subscribe(aVoid -> {
             getMainActivity().getPresenter().generatePdf();
@@ -106,17 +111,21 @@ public class SaveReportFragment extends BaseFragment {
     public void viewPdf(String file) {
 
         File pdfFile = new File(file);
-        Uri path = FileProvider.getUriForFile(getContext(), "com.einarvalgeir.bussrapport.provider" ,pdfFile);
+        Uri path = FileProvider
+                .getUriForFile(getContext(), "com.einarvalgeir.bussrapport.provider" ,pdfFile);
 
         // Setting the intent for pdf reader
         Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
         pdfIntent.setDataAndType(path, "application/pdf");
         pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        List<ResolveInfo> resInfoList = getContext().getPackageManager().queryIntentActivities(pdfIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        List<ResolveInfo> resInfoList =
+                getContext().getPackageManager()
+                        .queryIntentActivities(pdfIntent, PackageManager.MATCH_DEFAULT_ONLY);
         for (ResolveInfo resolveInfo : resInfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
-            getContext().grantUriPermission(packageName, path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            getContext().grantUriPermission(packageName, path,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
 
         try {
@@ -126,15 +135,15 @@ public class SaveReportFragment extends BaseFragment {
         }
     }
 
-    private void sendEmail() {
+    private void sendEmail(Email email) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("application/pdf");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {email});
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Felrapport");
-        intent.putExtra(Intent.EXTRA_TEXT, "body text");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {email.getTo()});
+        intent.putExtra(Intent.EXTRA_SUBJECT, email.getSubject());
+        intent.putExtra(Intent.EXTRA_TEXT, email.getBody());
 
         Uri fileUri = FileProvider.getUriForFile(getContext(), "com.einarvalgeir.bussrapport.provider",
-                new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/bus_report.pdf"));
+                new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + PdfCreator.FILE_NAME));
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.putExtra(Intent.EXTRA_STREAM, fileUri);
         startActivity(Intent.createChooser(intent, "Send email..."));

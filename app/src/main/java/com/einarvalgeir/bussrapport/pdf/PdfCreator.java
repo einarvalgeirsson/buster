@@ -25,7 +25,6 @@ public class PdfCreator {
 
     private static PdfCreator INSTANCE;
 
-    public static final String DIRECTORY = "external_files";
     public static final String FILE_NAME = "bus_report.pdf";
     private static final String TAG = PdfCreator.class.getSimpleName();
 

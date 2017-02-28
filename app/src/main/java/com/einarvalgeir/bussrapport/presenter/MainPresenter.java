@@ -1,5 +1,6 @@
 package com.einarvalgeir.bussrapport.presenter;
 
+import com.einarvalgeir.bussrapport.model.Email;
 import com.einarvalgeir.bussrapport.model.Problem;
 import com.einarvalgeir.bussrapport.model.Report;
 import com.einarvalgeir.bussrapport.pdf.PdfCreator;
@@ -10,6 +11,7 @@ import org.joda.time.DateTime;
 public class MainPresenter {
 
     private Report report;
+    private Email email;
 
     public MainPresenter(Report report, SharedPrefsUtil prefsUtil) {
         this.report = report;
@@ -43,5 +45,15 @@ public class MainPresenter {
 
     public Report getReport() {
         return report;
+    }
+
+    public Email getEmail() {
+        return new Email()
+                .withToAdress(report.getAssigneeEmail())
+                .withSubject("Felrapport Buss nr: " + report.getBusNumber())
+                .withBody("Hej, " + "\n"
+                        + "Felrapport är bifogad som PDF" + "\n\n"
+                        + "Med vänlig hälsning" + "\n"
+                        + report.getReporterName());
     }
 }
