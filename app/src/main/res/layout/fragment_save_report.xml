@@ -70,7 +70,16 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@color/colorPrimary"
-        android:text="Generera en rapport"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/send_report_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/save_report_button"
+        android:paddingTop="16dp"
+        android:background="@color/colorPrimary"
         android:textColor="@android:color/white">
 
     </Button>

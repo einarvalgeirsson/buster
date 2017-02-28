@@ -30,7 +30,7 @@ public class MainPresenter {
     }
 
     public void generatePdf() {
-        new PdfCreator(report).createPdf();
+        PdfCreator.getInstance(report).createPdf();
     }
 
     public void setDate(DateTime date) {

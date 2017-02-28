@@ -23,8 +23,10 @@ import java.io.IOException;
 
 public class PdfCreator {
 
-    private static final String DIRECTORY = "external_files";
-    private static final String FILE_NAME = "bus_report.pdf";
+    private static PdfCreator INSTANCE;
+
+    public static final String DIRECTORY = "external_files";
+    public static final String FILE_NAME = "bus_report.pdf";
     private static final String TAG = PdfCreator.class.getSimpleName();
 
     private static Font headerFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD);
@@ -34,21 +36,27 @@ public class PdfCreator {
 
     private Report report;
 
+    public static PdfCreator getInstance(Report report) {
+        if (INSTANCE == null) {
+            INSTANCE = new PdfCreator(report);
+        }
+        return INSTANCE;
+    }
+
     public PdfCreator(Report report) {
         this.report = report;
     }
 
     public void createPdf() {
         Document doc = new Document();
-
+        File file = null;
         try {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + DIRECTORY;
-
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath();
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
 
-            File file = new File(dir, FILE_NAME);
+            file = new File(dir, FILE_NAME);
             FileOutputStream fOut = new FileOutputStream(file);
 
             PdfWriter.getInstance(doc, fOut);
@@ -63,7 +71,9 @@ public class PdfCreator {
         } catch (FileNotFoundException | DocumentException e) {
             e.printStackTrace();
         } finally {
-            EventBus.getDefault().post(new ViewPdfEvent(FILE_NAME, DIRECTORY));
+            if (file != null) {
+                EventBus.getDefault().post(new ViewPdfEvent(file.getAbsolutePath()));
+            }
         }
     }
 

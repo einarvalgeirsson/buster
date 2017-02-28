@@ -2,15 +2,12 @@ package com.einarvalgeir.bussrapport;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,27 +17,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.einarvalgeir.bussrapport.events.ViewPdfEvent;
 import com.einarvalgeir.bussrapport.model.Report;
 import com.einarvalgeir.bussrapport.presenter.MainPresenter;
 import com.einarvalgeir.bussrapport.util.SharedPrefsUtil;
 import com.jakewharton.rxbinding.view.RxView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.File;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
     private static final int PICK_IMAGE = 0;
 
-    public static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1;
-    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 2;
 
 
     @BindView(R.id.fab)
@@ -208,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
     }
 
 
-
     public String getRealPathFromURI(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };
         @SuppressWarnings("deprecation")
@@ -221,7 +207,6 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
 
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
-
 
         private final String TAG = SectionsPagerAdapter.class.getSimpleName();
 
@@ -275,48 +260,6 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(ViewPdfEvent e) {
-        viewPdf(e.getFile(), e.getDirectory());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    public void viewPdf(String file, String directory) {
-
-        File pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
-        Uri path = FileProvider.getUriForFile(getApplicationContext(), "com.einarvalgeir.bussrapport.provider" ,pdfFile);
-
-        // Setting the intent for pdf reader
-        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-        pdfIntent.setDataAndType(path, "application/pdf");
-        pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        List<ResolveInfo> resInfoList = getApplicationContext().getPackageManager().queryIntentActivities(pdfIntent, PackageManager.MATCH_DEFAULT_ONLY);
-        for (ResolveInfo resolveInfo : resInfoList) {
-            String packageName = resolveInfo.activityInfo.packageName;
-            getApplicationContext().grantUriPermission(packageName, path, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-
-        try {
-            startActivity(pdfIntent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(MainActivity.this, "Can't read pdf file", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
     public boolean isPermissionGranted(String permission) {
         int isGranted = ContextCompat.checkSelfPermission(this, permission);
 
@@ -345,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
             case MY_PERMISSIONS_REQUEST_WRITE_STORAGE: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    return;
+                    // continue
                 } else {
                     finish();
                 }
