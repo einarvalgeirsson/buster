@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,9 @@ public class SaveReportFragment extends BaseFragment {
 
         RxView.clicks(saveButton).subscribe(aVoid -> {
             getMainActivity().getPresenter().generatePdf();
+            TransitionManager.beginDelayedTransition((ViewGroup) getView());
             sendButton.setVisibility(View.VISIBLE);
+            sendButton.requestLayout();
         });
 
         return rootView;
@@ -103,8 +106,11 @@ public class SaveReportFragment extends BaseFragment {
     }
 
     private void changeButtonStatusToView(String file) {
+        TransitionManager.beginDelayedTransition((ViewGroup) getView());
         saveButton.setText("Visa genererad PDF");
         saveButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        saveButton.requestLayout();
+
         RxView.clicks(saveButton).subscribe(aVoid -> viewPdf(file));
     }
 

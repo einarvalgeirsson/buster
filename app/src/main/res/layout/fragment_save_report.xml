@@ -78,7 +78,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/save_report_button"
-        android:paddingTop="16dp"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white">
 
