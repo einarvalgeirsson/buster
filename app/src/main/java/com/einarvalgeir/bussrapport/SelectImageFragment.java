@@ -35,7 +35,7 @@ public class SelectImageFragment extends BaseFragment {
 
         selectImageButton.setOnClickListener(view -> {
             if (!getMainActivity().isPermissionGranted(Manifest.permission.CAMERA)) {
-                getMainActivity().requestPermission(Manifest.permission.CAMERA, getMainActivity().MY_PERMISSIONS_REQUEST_CAMERA);
+                getMainActivity().requestPermission(Manifest.permission.CAMERA, MainActivity.MY_PERMISSIONS_REQUEST_CAMERA);
             } else {
                 getMainActivity().openImagePicker();
             }

@@ -19,6 +19,6 @@
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
         android:layout_below="@id/imageView"
-        android:paddingTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/select_image_button_text"/>
 </RelativeLayout>
