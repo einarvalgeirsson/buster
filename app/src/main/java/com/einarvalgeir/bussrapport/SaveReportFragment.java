@@ -19,9 +19,7 @@ import android.widget.Toast;
 
 import com.einarvalgeir.bussrapport.events.ViewPdfEvent;
 import com.einarvalgeir.bussrapport.model.Email;
-import com.einarvalgeir.bussrapport.model.Report;
 import com.einarvalgeir.bussrapport.pdf.PdfCreator;
-import com.einarvalgeir.bussrapport.util.SharedPrefsUtil;
 import com.jakewharton.rxbinding.view.RxView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +54,6 @@ public class SaveReportFragment extends BaseFragment {
 
     @BindView(R.id.send_report_button)
     Button sendButton;
-    private String email;
 
     public static SaveReportFragment newInstance() {
         return new SaveReportFragment();
@@ -68,20 +65,17 @@ public class SaveReportFragment extends BaseFragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_save_report, container, false);
         ButterKnife.bind(this, rootView);
 
-        email = new SharedPrefsUtil(getContext()).getAssigneeEmail();
-
-        sendButton.setText("Skicka Rapport till: " + email);
+        sendButton.setText("Skicka Rapport till: " + getMainActivity().getPresenter().getReport().getAssigneeEmail());
         sendButton.setVisibility(View.INVISIBLE);
 
         saveButton.setText("Generera en rapport");
 
-        Report currentReport = getMainActivity().getPresenter().getReport();
 
-        summaryBusNumber.setText("Bussnummer: " + currentReport.getBusNumber());
-        summaryServiceNumber.setText("Tjänstnummer: " + currentReport.getServiceNumber());
-        summaryProblem.setText("Problemområde: " + currentReport.getProblem().getName());
-        summaryDate.setText("Datum: " + currentReport.getTimeOfReporting());
-        summaryReporter.setText("Rapporterat av: " + currentReport.getReporterName());
+        summaryBusNumber.setText("Bussnummer: " + getMainActivity().getPresenter().getReport().getBusNumber());
+        summaryServiceNumber.setText("Tjänstnummer: " + getMainActivity().getPresenter().getReport().getServiceNumber());
+        summaryProblem.setText("Problemområde: " + getMainActivity().getPresenter().getReport().getProblem().getName());
+        summaryDate.setText("Datum: " + getMainActivity().getPresenter().getReport().getTimeOfReporting());
+        summaryReporter.setText("Rapporterat av: " + getMainActivity().getPresenter().getReport().getReporterName());
 
 //        setNextButtonVisible(View.GONE);
 
