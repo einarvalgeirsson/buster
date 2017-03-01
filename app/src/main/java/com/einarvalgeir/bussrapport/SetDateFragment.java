@@ -35,7 +35,7 @@ public class SetDateFragment extends BaseFragment implements INextButton {
         calendarView.setMaxDate(System.currentTimeMillis());
         date = new DateTime(calendarView.getDate());
         calendarView.setOnDateChangeListener((calendarView1, year, month, day) -> {
-            date = DateUtil.createFormattedDate(year, month, day);
+            date = DateUtil.createFormattedDate(year, month + 1, day);
             callback.changeNextButtonStatus(true);
         });
 
