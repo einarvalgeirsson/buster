@@ -1,8 +1,8 @@
 package com.einarvalgeir.bussrapport;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,8 +15,6 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
-import rx.Subscription;
-import rx.functions.Func2;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -32,8 +30,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     SharedPrefsUtil prefsUtil;
 
-    Subscription buttonClickSub;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
         reporterName.setText(prefsUtil.getReporterName());
         assigneeEmail.setText(prefsUtil.getAssigneeEmail());
 
-        RxView.clicks(saveButton)
-                .subscribe(aVoid -> storeSettings());
+
 
         rx.Observable<Boolean> reporterTextObservable =
                 RxTextView.textChangeEvents(reporterName)
@@ -57,12 +52,12 @@ public class SettingsActivity extends AppCompatActivity {
                 RxTextView.textChangeEvents(assigneeEmail)
                         .map(aVoid -> isEmailValid());
 
-        Observable.combineLatest(reporterTextObservable, emailTextObservable, new Func2<Boolean, Boolean, Boolean>() {
-            @Override
-            public Boolean call(Boolean reporterNameIsValid, Boolean emailIsValid) {
-                return reporterNameIsValid && emailIsValid;
-            }
-        }).subscribe(enableSaveButton -> setSaveButtonState(enableSaveButton));
+        Observable.combineLatest(reporterTextObservable, emailTextObservable,
+                (reporterNameIsValid, emailIsValid) -> reporterNameIsValid && emailIsValid)
+                .subscribe(this::setSaveButtonState);
+
+        RxView.clicks(saveButton)
+                .subscribe(aVoid -> storeSettings());
     }
 
     private void setSaveButtonState(boolean isEnabled) {
@@ -91,8 +86,9 @@ public class SettingsActivity extends AppCompatActivity {
                 .putString(Report.ASSIGNEE_EMAIL, assigneeEmail.getText().toString())
                 .apply();
 
-        Snackbar.make(findViewById(R.id.settings_root), "Ändringar sparade!", Snackbar.LENGTH_SHORT);
-        finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 
