@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Buster</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Inställningar</string>
+    <string name="action_new_report">Skapa ny felrapport</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="splash_screen_name">Buster</string>
     <string name="write_bus_number_hint_text">Skriv in bussnummer</string>
