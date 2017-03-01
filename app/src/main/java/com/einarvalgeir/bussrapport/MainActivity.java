@@ -27,10 +27,13 @@ import android.view.MenuItem;
 import com.einarvalgeir.bussrapport.model.Report;
 import com.einarvalgeir.bussrapport.presenter.MainPresenter;
 import com.einarvalgeir.bussrapport.util.SharedPrefsUtil;
+import com.jakewharton.rxbinding.support.v4.view.RxViewPager;
 import com.jakewharton.rxbinding.view.RxView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity implements IMainCallback {
 
@@ -66,11 +69,15 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         adapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
 
-        presenter = new MainPresenter(new Report(), prefsUtil);
-
         // Set up the ViewPager with the sections adapter.
         viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(adapter);
+
+        RxViewPager.pageSelections(viewPager).subscribe(page -> {
+            if(page == adapter.getCount()-1) {
+                hideNextButton();
+            }
+        });
 
         // Initially the next button is greyed out and disabled
         // Fragment notifies when 4 characters are inputted in edit text
@@ -79,25 +86,13 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
         RxView.clicks(nextButton)
                 .subscribe(aVoid -> onNextButtonClicked());
 
-        if (!reporterNameIsSet() || !assigneeEmailIsSet()) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        }
-
         if (!isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
         }
+
+        presenter = new MainPresenter(new Report(), prefsUtil);
     }
 
-
-
-    private boolean assigneeEmailIsSet() {
-        return !prefsUtil.getAssigneeEmail().isEmpty();
-    }
-
-    private boolean reporterNameIsSet() {
-        return !prefsUtil.getReporterName().isEmpty();
-    }
 
     public void onNextButtonClicked() {
         nextButtonCallback = (BaseFragment) adapter.instantiateItem(viewPager, viewPager.getCurrentItem());
@@ -123,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                 ColorStateList.valueOf(
                         getResources().getColor(
                                 isEnabled ? R.color.colorAccent : R.color.disabledButtonGrey)));
+    }
+
+    private void hideNextButton() {
+        nextButton.setVisibility(GONE);
     }
 
 
