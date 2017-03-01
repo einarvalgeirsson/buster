@@ -53,7 +53,9 @@ public class PdfCreator {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath();
             File dir = new File(path);
             if (!dir.exists())
-                dir.mkdirs();
+                if(!dir.mkdirs()) {
+                    Log.e(TAG, "Could not create neccessary directory for storing PDF");
+                }
 
             file = new File(dir, FILE_NAME);
             FileOutputStream fOut = new FileOutputStream(file);

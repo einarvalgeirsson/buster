@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openImagePicker();
                 }
-                return;
+                break;
             }
 
             case MY_PERMISSIONS_REQUEST_WRITE_STORAGE: {
@@ -292,7 +292,11 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                 } else {
                     finish();
                 }
+                break;
             }
+            default:
+                // Do nothing
+                break;
         }
     }
 

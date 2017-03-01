@@ -19,12 +19,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void waitUntilStartingApp() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
         }, WAIT_TIME_BEFORE_STARTING_APP_MILLIS);
     }
 }

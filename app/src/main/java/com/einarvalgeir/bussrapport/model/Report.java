@@ -4,8 +4,8 @@ import org.joda.time.DateTime;
 
 public class Report {
 
-    public static String USER_NAME = "user_name";
-    public static String ASSIGNEE_EMAIL = "asignee_email";
+    public static final String USER_NAME = "user_name";
+    public static final String ASSIGNEE_EMAIL = "asignee_email";
 
 
     private int busNumber;

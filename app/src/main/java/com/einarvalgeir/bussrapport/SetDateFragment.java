@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 
+import com.einarvalgeir.bussrapport.util.DateUtil;
+
 import org.joda.time.DateTime;
 
 import butterknife.BindView;
@@ -32,8 +34,8 @@ public class SetDateFragment extends BaseFragment implements INextButton {
 
         calendarView.setMaxDate(System.currentTimeMillis());
         date = new DateTime(calendarView.getDate());
-        calendarView.setOnDateChangeListener((calendarView1, i, i1, i2) -> {
-            date = new DateTime(i, i1+1, i2, 0 ,0);
+        calendarView.setOnDateChangeListener((calendarView1, year, month, day) -> {
+            date = DateUtil.createFormattedDate(year, month, day);
             callback.changeNextButtonStatus(true);
         });
 

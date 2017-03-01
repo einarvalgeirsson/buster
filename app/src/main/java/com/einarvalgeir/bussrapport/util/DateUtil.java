@@ -1,8 +1,10 @@
 package com.einarvalgeir.bussrapport.util;
 
-/**
- * Created by einarvalgeirsson on 2017-02-28.
- */
+import org.joda.time.DateTime;
 
 public class DateUtil {
+
+    public static DateTime createFormattedDate(int year, int month, int day) {
+        return new DateTime(year, month, day, 0, 0);
+    }
 }

@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 public class MainPresenter {
 
     private Report report;
-    private Email email;
 
     public MainPresenter(Report report, SharedPrefsUtil prefsUtil) {
         this.report = report;

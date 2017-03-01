@@ -107,11 +107,11 @@ public class NumPadInputFragment extends BaseFragment {
         if (textResId == R.string.write_bus_number_hint_text) {
             getMainActivity()
                     .getPresenter()
-                    .addBusNumber(Integer.valueOf(numpadResult.getText().toString()));
+                    .addBusNumber(Integer.parseInt(numpadResult.getText().toString()));
         } else if (textResId == R.string.write_service_number_hint_text) {
             getMainActivity()
                     .getPresenter()
-                    .addServiceNumber(Integer.valueOf(numpadResult.getText().toString()));
+                    .addServiceNumber(Integer.parseInt(numpadResult.getText().toString()));
         }
     }
 }
