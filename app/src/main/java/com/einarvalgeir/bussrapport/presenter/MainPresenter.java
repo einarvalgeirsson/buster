@@ -22,7 +22,7 @@ public class MainPresenter {
         report.setBusNumber(busNumber);
     }
 
-    public void addServiceNumber(int serviceNumber) {
+    public void addServiceNumber(String serviceNumber) {
         report.setServiceNumber(serviceNumber);
     }
 

@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements IMainCallback {
                     fragment = NumPadInputFragment.newInstance(R.string.write_bus_number_hint_text);
                     break;
                 case 1:
-                    fragment = NumPadInputFragment.newInstance(R.string.write_service_number_hint_text);
+                    fragment = ServiceNumberInputFragment.newInstance();
                     break;
                 case 2:
                     fragment = SelectProblemAreaFragment.newInstance();

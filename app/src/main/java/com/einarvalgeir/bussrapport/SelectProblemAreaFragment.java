@@ -167,5 +167,8 @@ public class SelectProblemAreaFragment extends BaseFragment implements ProblemAr
         p.setDescription(problemAreaDescriptions.getText().toString());
 
         getMainActivity().getPresenter().setProblem(p);
+
+        InputMethodManager imm = (InputMethodManager) getMainActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 }

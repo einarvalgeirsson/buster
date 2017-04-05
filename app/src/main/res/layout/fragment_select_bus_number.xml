@@ -1,77 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="bus_nbr_fragment">
+    android:background="@color/colorPrimaryLight"
+    android:scrollbars="vertical"
+    android:tag="bus_nbr_fragment"
+    android:orientation="vertical">
 
-    <RelativeLayout
+
+    <TextView
+        android:id="@+id/bus_number_desc_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-thin"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="16dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        />
+
+    <TextView
+        android:id="@+id/written_bus_number"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="96dp"
+        android:layout_below="@id/bus_number_desc_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
         android:background="@color/colorPrimaryLight"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:fontFamily="sans-serif"
+        android:maxLength="4"
+        android:maxLines="1"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:textSize="36sp"
+        />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/numpad"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:orientation="vertical"
-            >
-
-            <android.support.v4.widget.Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/bus_number_desc_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:textAlignment="center"
-                android:fontFamily="sans-serif-light"
-                android:textColor="@android:color/white"
-                android:textSize="28sp"
-                android:paddingTop="16dp"
-                />
-
-            <TextView
-                android:id="@+id/written_bus_number"
-                android:layout_width="match_parent"
-                android:layout_height="96dp"
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/colorPrimaryLight"
-                android:maxLength="4"
-                android:maxLines="1"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:fontFamily="sans-serif"
-                android:textColorHint="@android:color/white"
-                android:textSize="36sp"
-                />
-
-            <android.support.v4.widget.Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
+    <include
+        android:id="@+id/numpad"
+        layout="@layout/numpad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/written_bus_number"
+        />
 
 
-        <include
-            android:id="@+id/numpad"
-            layout="@layout/numpad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="128dp"
-            />
-
-
-    </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

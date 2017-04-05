@@ -104,14 +104,8 @@ public class NumPadInputFragment extends BaseFragment {
     @Override
     public void nextButtonClicked() {
         // Store bus number in model via presenter
-        if (textResId == R.string.write_bus_number_hint_text) {
             getMainActivity()
                     .getPresenter()
                     .addBusNumber(Integer.parseInt(numpadResult.getText().toString()));
-        } else if (textResId == R.string.write_service_number_hint_text) {
-            getMainActivity()
-                    .getPresenter()
-                    .addServiceNumber(Integer.parseInt(numpadResult.getText().toString()));
-        }
     }
 }

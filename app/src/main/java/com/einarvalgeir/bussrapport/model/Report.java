@@ -9,7 +9,7 @@ public class Report {
 
 
     private int busNumber;
-    private int serviceNumber;
+    private String serviceNumber;
     private String reporterName;
     private Problem problem;
     private String assigneeEmail;
@@ -22,7 +22,7 @@ public class Report {
         this.busNumber = busNumber;
     }
 
-    public void setServiceNumber(int serviceNumber) {
+    public void setServiceNumber(String serviceNumber) {
         this.serviceNumber = serviceNumber;
     }
 
@@ -38,7 +38,7 @@ public class Report {
         return busNumber;
     }
 
-    public int getServiceNumber() {
+    public String getServiceNumber() {
         return serviceNumber;
     }
 
