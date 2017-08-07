@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "119261844831",
+    "firebase_url": "https://buster-29639.firebaseio.com",
+    "project_id": "buster-29639",
+    "storage_bucket": "buster-29639.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119261844831:android:6f565ac1ae50da8c",
+        "android_client_info": {
+          "package_name": "com.einarvalgeir.bussrapport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119261844831-39dj8f5kft5fodtcq1auripq7c0b8186.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI6Cml9_PkkCCW8RR1jYQmv-Hp8mJo0rQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
